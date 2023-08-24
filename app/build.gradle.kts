@@ -89,6 +89,7 @@ dependencies {
     // Retrofit
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:1.0.0")
+    implementation("com.squareup.okhttp3:okhttp-urlconnection:4.4.1")
 
     // Google Auth
     implementation("com.google.android.gms:play-services-auth:20.6.0")
