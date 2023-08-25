@@ -33,8 +33,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.googleauthapp.R
 import com.example.googleauthapp.domain.model.MessageBarState
 import com.example.googleauthapp.ui.theme.ErrorRed
+import com.example.googleauthapp.ui.theme.HUGE_PADDING
 import com.example.googleauthapp.ui.theme.InfoGreen
-import com.example.googleauthapp.ui.theme.LARGEST_PADDING
 import com.example.googleauthapp.ui.theme.LARGE_PADDING
 import com.example.googleauthapp.ui.theme.MESSAGE_BAR_HEIGHT
 import kotlinx.coroutines.delay
@@ -89,7 +89,7 @@ fun Message(
             else
                 InfoGreen
         )
-        .padding(horizontal = LARGEST_PADDING)
+        .padding(horizontal = HUGE_PADDING)
         .heightIn(min = MESSAGE_BAR_HEIGHT),
         verticalAlignment = Alignment.CenterVertically
     ) {

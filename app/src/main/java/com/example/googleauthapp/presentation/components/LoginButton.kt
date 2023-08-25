@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -30,6 +31,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.googleauthapp.R
+import com.example.googleauthapp.ui.theme.CORNER_RADIUS
 import com.example.googleauthapp.ui.theme.LARGER_PADDING
 import com.example.googleauthapp.ui.theme.LARGE_PADDING
 import com.example.googleauthapp.ui.theme.MEDIUM_PADDING
@@ -58,6 +60,7 @@ fun LoginButton(
             .clickable(enabled = !loadingState) {
                 onClick()
             },
+        shape = RoundedCornerShape(CORNER_RADIUS),
         border = BorderStroke(width = borderStrokeWidth, color = borderColor),
         color = backgroundColor
     ) {
