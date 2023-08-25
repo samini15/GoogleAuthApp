@@ -27,6 +27,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.googleauthapp.R
 import com.example.googleauthapp.ui.theme.LARGER_PADDING
@@ -41,6 +42,7 @@ fun LoginButton(
     secondaryText: String = "Please Wait...",
     icon: Int = R.drawable.ic_google_logo,
     borderColor: Color = Color.LightGray,
+    borderStrokeWidth: Dp = 1.dp,
     backgroundColor: Color = MaterialTheme.colorScheme.surface,
     progressIndicatorColor: Color = Color.Blue,
     onClick: () -> Unit
@@ -56,7 +58,7 @@ fun LoginButton(
             .clickable(enabled = !loadingState) {
                 onClick()
             },
-        border = BorderStroke(width = 1.dp, color = borderColor),
+        border = BorderStroke(width = borderStrokeWidth, color = borderColor),
         color = backgroundColor
     ) {
         Row(modifier = Modifier
