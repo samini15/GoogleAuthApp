@@ -1,14 +1,20 @@
 package com.example.googleauthapp.presentation.screens.login
 
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.util.Log
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.example.googleauthapp.domain.model.MessageBarState
+import com.example.googleauthapp.presentation.common.StartActivityForResult
+import com.example.googleauthapp.presentation.common.signIn
 import com.example.googleauthapp.ui.theme.topAppBarBackgroundColor
 import com.example.googleauthapp.ui.theme.topAppBarContentColor
 import com.example.googleauthapp.viewModel.LoginViewModel
@@ -22,7 +28,7 @@ fun LoginScreen(
 ) {
 
     // Observing ViewModel
-    val signedInState by loginViewModel.signedInState
+    val signedInState by loginViewModel.signedInState.collectAsStateWithLifecycle()
     val messageBarState by loginViewModel.messageBarState
 
     Scaffold(
@@ -40,5 +46,31 @@ fun LoginScreen(
                 loginViewModel.saveSignedInState(signedIn = true)
             }
         )
+    }
+
+    val activity = LocalContext.current as Activity
+    StartActivityForResult(
+        key = signedInState,
+        onResultReceived = { tokenId ->
+            Log.d("LoginScreen", tokenId)
+        },
+        onDialogDismissed = {
+            loginViewModel.saveSignedInState(signedIn = false)
+        }
+    ) { launcher ->
+        if (signedInState) {
+            signIn(
+                activity = activity,
+                launchActivityResult = { intentSenderRequest ->
+                    launcher.launch(intentSenderRequest)
+                },
+                accountNotFound = {
+                    loginViewModel.apply {
+                        saveSignedInState(signedIn = false)
+                        updateMessageBarState()
+                    }
+                }
+            )
+        }
     }
 }
