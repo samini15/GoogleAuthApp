@@ -1,5 +1,6 @@
 package com.example.googleauthapp.dependencyInjection
 
+import com.example.googleauthapp.data.remote.AuthenticationApi
 import com.example.googleauthapp.util.Constants
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module
@@ -32,6 +33,8 @@ object NetworkModule {
             .cookieJar(JavaNetCookieJar(cookieManager)) // Attach cookie to each request
             .build()
 
+    @Provides
+    @Singleton
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
         val contentType = "application/json".toMediaType()
         return Retrofit.Builder()
@@ -40,4 +43,9 @@ object NetworkModule {
             .addConverterFactory(Json.asConverterFactory(contentType = contentType))
             .build()
     }
+
+    @Provides
+    @Singleton
+    fun provideAuthenticationApiService(retrofit: Retrofit): AuthenticationApi =
+        retrofit.create(AuthenticationApi::class.java)
 }

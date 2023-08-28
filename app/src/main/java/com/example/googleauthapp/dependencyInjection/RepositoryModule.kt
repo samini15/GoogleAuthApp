@@ -7,6 +7,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStoreFile
 import com.example.googleauthapp.data.dataStore.DataStoreOperations
 import com.example.googleauthapp.data.dataStore.DataStoreOperationsImpl
+import com.example.googleauthapp.data.remote.AuthenticationApi
 import com.example.googleauthapp.domain.repository.LoginRepository
 import com.example.googleauthapp.domain.repository.LoginRepositoryImpl
 import com.example.googleauthapp.util.Constants
@@ -39,6 +40,7 @@ object RepositoryModule {
     @Provides
     @Singleton
     fun provideLoginRepository(
-        dataStoreOperations: DataStoreOperations
-    ): LoginRepository = LoginRepositoryImpl(dataStoreOperations = dataStoreOperations)
+        dataStoreOperations: DataStoreOperations,
+        api: AuthenticationApi
+    ): LoginRepository = LoginRepositoryImpl(dataStoreOperations = dataStoreOperations, authenticationApiService = api)
 }
