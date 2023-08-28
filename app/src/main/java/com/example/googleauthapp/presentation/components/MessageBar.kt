@@ -30,6 +30,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.example.googleauthapp.R
 import com.example.googleauthapp.domain.model.MessageBarState
 import com.example.googleauthapp.ui.theme.ErrorRed
@@ -56,7 +57,7 @@ fun MessageBar(messageBarState: MessageBarState) {
             }
         }
         startAnimation = true
-        delay(4000) // Visible only 4 seconds
+        delay(4000000) // Visible only 4 seconds
         startAnimation = false
     }
     

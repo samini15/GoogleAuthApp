@@ -20,6 +20,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.googleauthapp.R
 import com.example.googleauthapp.domain.model.MessageBarState
@@ -36,13 +37,14 @@ import com.example.googleauthapp.ui.theme.SMALL_PADDING
 fun LoginContent(
     signedInState: Boolean,
     messageBarState: MessageBarState,
-    onLoginClicked: () -> Unit
+    onLoginClicked: () -> Unit,
+    topPadding: Dp
 ) {
     Column(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Column(modifier = Modifier.weight(1f)) {
+        Column(modifier = Modifier.weight(2f).padding(top = topPadding)) {
             MessageBar(messageBarState = messageBarState)
         }
         Column(modifier = Modifier
@@ -96,6 +98,7 @@ fun LoginContentPreview() {
     LoginContent(
         signedInState = false,
         messageBarState = MessageBarState(),
-        onLoginClicked = {})
+        onLoginClicked = {},
+        topPadding = 30.dp)
     
 }
