@@ -5,4 +5,6 @@
 
     <string name="login_icon_content_description">Login Icon</string>
     <string name="message_bar_icon_content_description">Message Bar Icon</string>
+    <string name="save_icon_content_description">Save Icon</string>
+    <string name="more_menu_icon_content_description">More Menu Icon</string>
 </resources>
