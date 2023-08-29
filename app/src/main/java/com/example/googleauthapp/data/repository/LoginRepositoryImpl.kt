@@ -1,10 +1,11 @@
-package com.example.googleauthapp.domain.repository
+package com.example.googleauthapp.data.repository
 
 import com.example.googleauthapp.data.dataStore.DataStoreOperations
 import com.example.googleauthapp.data.remote.AuthenticationApi
 import com.example.googleauthapp.domain.model.dto.AuthenticationApiRequest
 import com.example.googleauthapp.domain.model.dto.AuthenticationApiResponse
 import com.example.googleauthapp.domain.model.dto.UserUpdate
+import com.example.googleauthapp.domain.repository.LoginRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 

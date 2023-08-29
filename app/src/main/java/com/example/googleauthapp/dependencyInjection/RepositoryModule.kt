@@ -9,7 +9,7 @@ import com.example.googleauthapp.data.dataStore.DataStoreOperations
 import com.example.googleauthapp.data.dataStore.DataStoreOperationsImpl
 import com.example.googleauthapp.data.remote.AuthenticationApi
 import com.example.googleauthapp.domain.repository.LoginRepository
-import com.example.googleauthapp.domain.repository.LoginRepositoryImpl
+import com.example.googleauthapp.data.repository.LoginRepositoryImpl
 import com.example.googleauthapp.util.Constants
 import dagger.Module
 import dagger.Provides

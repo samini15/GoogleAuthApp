@@ -12,4 +12,5 @@
     <string name="profile_top_bar_title">Profile</string>
     <string name="first_name_textfield_label">First Name</string>
     <string name="last_name_textfield_label">Last Name</string>
+    <string name="email_address_textfield_label">Email Address</string>
 </resources>

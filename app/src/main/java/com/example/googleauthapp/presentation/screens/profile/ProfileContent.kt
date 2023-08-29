@@ -1,5 +1,6 @@
 package com.example.googleauthapp.presentation.screens.profile
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -7,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -17,11 +17,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
 import coil.compose.rememberAsyncImagePainter
 import com.example.googleauthapp.R
 import com.example.googleauthapp.domain.model.MessageBarState
@@ -40,8 +37,8 @@ fun ProfileContent(
     onFirstNameChanged: (String) -> Unit,
     lastName: String,
     onLastNameChanged: (String) -> Unit,
-    email: String,
-    profilePicture: String,
+    email: String?,
+    profilePicture: String?,
     onSignOutClicked: () -> Unit
 ) {
     Column(
@@ -70,9 +67,9 @@ fun ProfileContent(
         ) {
             ProfileCentralContent(
                 firstName = firstName,
-                onFirstNameChanged = { onFirstNameChanged },
+                onFirstNameChanged = { onFirstNameChanged(it) },
                 lastName = lastName,
-                onLastNameChanged = { onLastNameChanged },
+                onLastNameChanged = { onLastNameChanged(it) },
                 email = email,
                 profilePicture = profilePicture,
                 onSignOutClicked = onSignOutClicked
@@ -81,27 +78,25 @@ fun ProfileContent(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileCentralContent(
     firstName: String,
     onFirstNameChanged: (String) -> Unit,
     lastName: String,
     onLastNameChanged: (String) -> Unit,
-    email: String,
-    profilePicture: String,
+    email: String?,
+    profilePicture: String?,
     onSignOutClicked: () -> Unit
 ) {
     val painter = rememberAsyncImagePainter(model = profilePicture)
 
-    AsyncImage(
+    Image(
         modifier = Modifier
             .padding(bottom = LARGEST_PADDING)
             .size(150.dp)
             .clip(CircleShape),
-        model = painter,
-        contentDescription = "",
-        placeholder = painterResource(id = R.drawable.ic_person)
+        painter = painter,
+        contentDescription = ""
     )
 
     OutlinedTextField(
@@ -125,9 +120,9 @@ fun ProfileCentralContent(
     )
 
     OutlinedTextField(
-        value = email,
+        value = email.orEmpty(),
         onValueChange = {},
-        label = { Text(text = "Email Address") },
+        label = { Text(text = stringResource(R.string.email_address_textfield_label)) },
         textStyle = MaterialTheme.typography.labelMedium,
         singleLine = true,
         enabled = false
@@ -135,7 +130,7 @@ fun ProfileCentralContent(
 
     LoginButton(
         modifier = Modifier
-            .fillMaxWidth()
+            .fillMaxWidth(fraction = 0.7f)
             .padding(top = HUGE_PADDING),
         primaryText = "Sign Out",
         secondaryText = "Sign Out",

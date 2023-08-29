@@ -10,4 +10,6 @@ object Constants {
 
     // Server app link on Google cloud service
     const val GOOGLE_CLIENT_ID = "1054136301921-a7744aovuhjd8ru1kkml6ffdtcev7bo6.apps.googleusercontent.com"
+
+    const val MAX_CHAR_TEXT_FIELD = 25
 }
