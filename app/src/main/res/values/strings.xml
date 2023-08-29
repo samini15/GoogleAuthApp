@@ -10,4 +10,6 @@
     <string name="delete_your_account_alert_dialog_title">Delete your account</string>
     <string name="delete_your_account_alert_dialog_message">Are you sure you want to delete your account?</string>
     <string name="profile_top_bar_title">Profile</string>
+    <string name="first_name_textfield_label">First Name</string>
+    <string name="last_name_textfield_label">Last Name</string>
 </resources>
