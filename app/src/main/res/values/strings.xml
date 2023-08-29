@@ -7,4 +7,7 @@
     <string name="message_bar_icon_content_description">Message Bar Icon</string>
     <string name="save_icon_content_description">Save Icon</string>
     <string name="more_menu_icon_content_description">More Menu Icon</string>
+    <string name="delete_your_account_alert_dialog_title">Delete your account</string>
+    <string name="delete_your_account_alert_dialog_message">Are you sure you want to delete your account?</string>
+    <string name="profile_top_bar_title">Profile</string>
 </resources>

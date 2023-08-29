@@ -19,6 +19,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.googleauthapp.R
+import com.example.googleauthapp.presentation.components.CustomAlertDialog
 import com.example.googleauthapp.ui.theme.topAppBarBackgroundColor
 import com.example.googleauthapp.ui.theme.topAppBarContentColor
 
@@ -30,7 +31,7 @@ fun ProfileTopBar(
 ) {
     TopAppBar(
         title = {
-            Text(text = "Profile", color = MaterialTheme.colorScheme.topAppBarContentColor)
+            Text(text = stringResource(R.string.profile_top_bar_title), color = MaterialTheme.colorScheme.topAppBarContentColor)
         },
         colors = TopAppBarDefaults.smallTopAppBarColors(containerColor = MaterialTheme.colorScheme.topAppBarBackgroundColor),
         actions = {
@@ -44,8 +45,19 @@ fun ProfileTopBarActions(
     onSave: () -> Unit,
     onDelete: () -> Unit
 ) {
+    var openDialog by remember { mutableStateOf(false) }
+
+    CustomAlertDialog(
+        title = stringResource(R.string.delete_your_account_alert_dialog_title),
+        message = stringResource(R.string.delete_your_account_alert_dialog_message),
+        openDialog = openDialog,
+        onPositiveClicked = {
+            onDelete()
+        },
+        onDialogClosed = { openDialog = false}
+    )
     SaveAction { onSave() }
-    DeleteAction { onDelete() }
+    DeleteAction { openDialog = true }
 }
 
 @Composable
