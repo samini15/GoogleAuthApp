@@ -1,19 +1,13 @@
 package com.example.googleauthapp.presentation.screens.profile
 
 import android.annotation.SuppressLint
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
-import com.example.googleauthapp.domain.model.MessageBarState
-import com.example.googleauthapp.domain.model.dto.AuthenticationApiResponse
-import com.example.googleauthapp.util.RequestState
 import com.example.googleauthapp.viewModel.ProfileViewModel
 
-@OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun ProfileScreen(
@@ -31,7 +25,10 @@ fun ProfileScreen(
 
     Scaffold(
         topBar = {
-            ProfileTopBar(onSave = { }, onDelete = {})
+            ProfileTopBar(
+                onSave = { profileViewModel.updateUserInfo() },
+                onDelete = {}
+            )
         }
     ) {
         ProfileContent(
@@ -47,7 +44,8 @@ fun ProfileScreen(
             },
             email = currentUser?.email,
             profilePicture = currentUser?.profilePicture,
-            onSignOutClicked = {}
+            onSignOutClicked = {},
+            scaffoldPaddingValues = it
         )
     }
 

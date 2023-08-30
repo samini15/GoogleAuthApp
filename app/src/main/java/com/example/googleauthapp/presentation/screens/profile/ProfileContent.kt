@@ -3,6 +3,7 @@ package com.example.googleauthapp.presentation.screens.profile
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -39,7 +40,8 @@ fun ProfileContent(
     onLastNameChanged: (String) -> Unit,
     email: String?,
     profilePicture: String?,
-    onSignOutClicked: () -> Unit
+    onSignOutClicked: () -> Unit,
+    scaffoldPaddingValues: PaddingValues
 ) {
     Column(
         modifier = Modifier
@@ -48,7 +50,11 @@ fun ProfileContent(
         verticalArrangement = Arrangement.Center
     ) {
 
-        Column(modifier = Modifier.weight(2f)) {
+        Column(
+            modifier = Modifier
+            .weight(2f)
+            .padding(top = scaffoldPaddingValues.calculateTopPadding())
+        ) {
             if (apiResponse is RequestState.Loading) {
                 LinearProgressIndicator(
                     modifier = Modifier.fillMaxWidth(),
