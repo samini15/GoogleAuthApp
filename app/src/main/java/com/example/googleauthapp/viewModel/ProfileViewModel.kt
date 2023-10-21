@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.googleauthapp.domain.model.MessageBarState
+import com.example.googleauthapp.domain.model.dto.AuthenticationApiRequest
 import com.example.googleauthapp.domain.model.dto.AuthenticationApiResponse
 import com.example.googleauthapp.domain.model.dto.User
 import com.example.googleauthapp.domain.model.dto.UserUpdate
@@ -15,6 +16,7 @@ import com.example.googleauthapp.util.RequestState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -27,6 +29,9 @@ class ProfileViewModel @Inject constructor(
 
     private val _apiResponse: MutableState<RequestState<AuthenticationApiResponse>> = mutableStateOf(RequestState.Idle)
     val apiResponse: State<RequestState<AuthenticationApiResponse>> = _apiResponse
+
+    private val _clearSessionResponse: MutableState<RequestState<AuthenticationApiResponse>> = mutableStateOf(RequestState.Idle)
+    val clearSessionResponse: State<RequestState<AuthenticationApiResponse>> = _clearSessionResponse
 
     private val _messageBarState: MutableState<MessageBarState> = mutableStateOf(MessageBarState())
     val messageBarState: State<MessageBarState> = _messageBarState
@@ -44,7 +49,9 @@ class ProfileViewModel @Inject constructor(
     private fun getUserInfo() = viewModelScope.launch/*(Dispatchers.IO)*/ {
         _apiResponse.value = RequestState.Loading
         try {
-            val response = loginRepository.getUserInfo()
+            val response = withContext(Dispatchers.IO) {
+                loginRepository.getUserInfo()
+            }
             _apiResponse.value = RequestState.Success(data = response)
             _messageBarState.value = MessageBarState(
                 message = response.message,
@@ -72,10 +79,6 @@ class ProfileViewModel @Inject constructor(
             if (currentUser.value != null) {
                 val response = loginRepository.getUserInfo()
                 verifyAndUpdateUser(currentUser = response)
-                _messageBarState.value = MessageBarState(
-                    message = response.message,
-                    error = response.error
-                )
             }
         } catch (e: Exception) {
             _apiResponse.value = RequestState.Error(e)
@@ -101,23 +104,77 @@ class ProfileViewModel @Inject constructor(
         }
         viewModelScope.launch(Dispatchers.IO) {
             if (verified) {
-                val response = loginRepository.updateUserInfo(
-                    userUpdate = UserUpdate(
-                        firstName = firstName.value,
-                        lastName = lastName.value
+                try {
+                    val response = loginRepository.updateUserInfo(
+                        userUpdate = UserUpdate(
+                            firstName = firstName.value,
+                            lastName = lastName.value
+                        )
                     )
-                )
-                _apiResponse.value = RequestState.Success(response)
-                _messageBarState.value = MessageBarState(
-                    message = response.message,
-                    error = response.error
-                )
+                    _apiResponse.value = RequestState.Success(response)
+                    _messageBarState.value = MessageBarState(
+                        message = response.message,
+                        error = response.error
+                    )
+                } catch (e: Exception) {
+                    _apiResponse.value = RequestState.Error(e)
+                    _messageBarState.value = MessageBarState(error = e)
+                }
             } else {
                 _apiResponse.value =
                     RequestState.Success(AuthenticationApiResponse(success = false, error = exception))
                 _messageBarState.value = MessageBarState(
                     error = exception
                 )
+            }
+        }
+    }
+
+    fun verifyTokenWithAuthApi(request: AuthenticationApiRequest) {
+        _apiResponse.value = RequestState.Loading
+        try {
+            viewModelScope.launch(Dispatchers.IO) {
+                val response = loginRepository.verifyTokenWithAuthApi(request = request)
+                _apiResponse.value = RequestState.Success(response)
+                _messageBarState.value = MessageBarState(message = response.message, error = response.error)
+
+            }
+        } catch (e: Exception) {
+            _apiResponse.value = RequestState.Error(e)
+            _messageBarState.value = MessageBarState(error = e)
+        }
+    }
+
+    fun clearSession() {
+        _clearSessionResponse.value = RequestState.Loading
+        _apiResponse.value = RequestState.Loading
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val response = loginRepository.logOut()
+                _clearSessionResponse.value = RequestState.Success(response)
+                _apiResponse.value = RequestState.Success(response)
+                _messageBarState.value = MessageBarState(message = response.message, error = response.error)
+            } catch (e: Exception) {
+                _clearSessionResponse.value = RequestState.Error(e)
+                _apiResponse.value = RequestState.Error(e)
+                _messageBarState.value = MessageBarState(error = e)
+            }
+        }
+    }
+
+    fun deleteUser() {
+        _clearSessionResponse.value = RequestState.Loading
+        _apiResponse.value = RequestState.Loading
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val response = loginRepository.deleteUserInfo()
+                _clearSessionResponse.value = RequestState.Success(response)
+                _apiResponse.value = RequestState.Success(response)
+                _messageBarState.value = MessageBarState(message = response.message, error = response.error)
+            } catch (e: Exception) {
+                _clearSessionResponse.value = RequestState.Error(e)
+                _apiResponse.value = RequestState.Error(e)
+                _messageBarState.value = MessageBarState(error = e)
             }
         }
     }
@@ -132,6 +189,10 @@ class ProfileViewModel @Inject constructor(
         if (newValue.length < Constants.MAX_CHAR_TEXT_FIELD) {
             _lastName.value = newValue
         }
+    }
+
+    fun saveSignedInState(signedIn: Boolean) = viewModelScope.launch(Dispatchers.IO) {
+        loginRepository.saveSignedInState(signedIn = signedIn)
     }
 }
 
